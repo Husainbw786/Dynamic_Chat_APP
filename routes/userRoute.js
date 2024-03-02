@@ -7,6 +7,8 @@ const session = require('express-session');
 const { SESSION_SECRET } = process.env;
 user_route.use(session({ secret: SESSION_SECRET }));
 
+const auth = require('../middleware/auth');
+
 user_route.use(bodyParser.json());
 user_route.use(bodyParser.urlencoded({ extended: true }));
 
@@ -32,16 +34,16 @@ const upload = multer({ storage: storage });
 const userController = require('../controllers/userController');
 
 
-user_route.get('/register', userController.registerLoad);
+user_route.get('/register', auth.isLogout, userController.registerLoad);
 user_route.post('/register', upload.single('image'), userController.register);
 
-user_route.get('/', userController.loadLogin);
+user_route.get('/', auth.isLogout,userController.loadLogin);
 user_route.post('/', userController.login);
-user_route.get('/logout', userController.logout);
-user_route.get('/dashboard', userController.loadDashboard);
+user_route.get('/logout',auth.isLogin, userController.logout);
+user_route.get('/dashboard',auth.isLogin, userController.loadDashboard);
 
 
-user_route.get('*', function(req,res){
+user_route.get('*', function (req, res) {
     res.redirect('/');
 });
 
