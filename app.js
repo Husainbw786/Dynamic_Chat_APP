@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 // mongoose.connect('mongodb+srv://G1yomf2zJBcfKaai:G1yomf2zJBcfKaai@todo.jrxtitu.mongodb.net/?retryWrites=true&w=majority&appName=todo');
 // const mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://G1yomf2zJBcfKaai:G1yomf2zJBcfKaai@todo.jrxtitu.mongodb.net/?retryWrites=true&w=majority&appName=todo', {
+mongoose.connect(process.env.MONGO_DB_ATLAS, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -25,7 +25,8 @@ mongoose.connection.on('disconnected', () => {
     console.log('Mongoose disconnected');
 });
 
-const app = require('express')()
+const app = require('express')();
+const Chat = require('./models/ChatModel');
 
 const http = require('http').Server(app);
 
@@ -59,6 +60,18 @@ usp.on('connection', async function (socket) {
     // chatting showing to user profile
     socket.on('newChat',function(data){
         socket.broadcast.emit('loadNewChat',data);
+    });
+
+    // Load pervious Chat
+
+    socket.on('existsChat',async function(data){
+       var chats =  await Chat.find({ $or:[
+            { sender_id : data.sender_id, receiver_id : data.receiver_id},
+            { sender_id : data.receiver_id, receiver_id : data.sender_id},
+        ] });
+
+        socket.emit('loadChats',{ chats: chats });
+
     });
 
 });
