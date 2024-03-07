@@ -12031,3 +12031,15 @@ a[data-toggle="collapse"] {
   color: red;
 
 }
+
+.current-user-chat{
+   text-align: right;
+   margin: 10px;
+   color: black;  
+}
+.distance-user-chat{
+  text-align: left;
+  margin: 10px;
+  color: black;
+
+}

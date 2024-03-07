@@ -54,7 +54,12 @@ usp.on('connection', async function (socket) {
 
         // user braodcast offline status.
         socket.broadcast.emit('getOfflineUser', { user_id: userId });
-    })
+    });
+
+    // chatting showing to user profile
+    socket.on('newChat',function(data){
+        socket.broadcast.emit('loadNewChat',data);
+    });
 
 });
 
