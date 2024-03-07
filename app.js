@@ -2,10 +2,6 @@ require('dotenv').config();
 
 var mongoose = require('mongoose');
 
-//mongoose.connect('mongodb+srv://husain:husain@todo.jrxtitu.mongodb.net/?retryWrites=true&w=majority&appName=todo');
-// mongoose.connect('mongodb+srv://G1yomf2zJBcfKaai:G1yomf2zJBcfKaai@todo.jrxtitu.mongodb.net/?retryWrites=true&w=majority&appName=todo');
-// const mongoose = require('mongoose');
-
 mongoose.connect(process.env.MONGO_DB_ATLAS, {
     useNewUrlParser: true,
     useUnifiedTopology: true
