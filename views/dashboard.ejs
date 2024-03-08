@@ -114,6 +114,7 @@
                         `;
                         $('#chat-container').append(html);
                         socket.emit('newChat',response.data);
+                        scrollChat();
                     }
                     else{
                         alert(data.msg);
@@ -133,6 +134,7 @@
                         `;
                         $('#chat-container').append(html);
             }
+            scrollChat();
             
         });
 
@@ -164,8 +166,15 @@
             }
 
             $('#chat-container').append(html);
+            scrollChat();
 
         });
+
+        function scrollChat(){
+            $('#chat-container').animate({
+                scrollTop: $('#chat-container').offset().top + $('#chat-container')[0].scrollHeight
+            },0);
+        }
 
     </script>
 
